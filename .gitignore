@@ -1,0 +1,11 @@
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+objFile/newclass.sh
+makeProject.sh
+VM/newclass.sh
+VM/build/VM
+VM/build/start
+VM/build/file.o
+objFile/build/start
+objFile/build/ObjFile
+objFile/build/file.o
