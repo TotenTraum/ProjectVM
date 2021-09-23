@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>
+#include "types.h"
 
 struct Registers
 {
@@ -13,4 +13,6 @@ struct Registers
     uint16_t SI;
     //Destination Index
     uint16_t DI;
+
+    types Adder;
 };

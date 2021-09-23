@@ -2,111 +2,109 @@
 
 void IncCommand::operator()()
 {
-    (Adder->Integer)++;
+    (registers->Adder.Integer)++;
 
 }
 
 void IncFloatCommand::operator()()
 {
-    (Adder->Float)++;
+    (registers->Adder.Float)++;
 
 }
 
 void AddCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
-    ADDER->Integer += tmp.Integer;
+    memory->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    registers->Adder.Integer += tmp.Integer;
 
 }
 
 void SubCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
-    ADDER->Integer -= tmp.Integer;
+    memory->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    registers->Adder.Integer -= tmp.Integer;
 }
 
 void MulCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
-    ADDER->Integer *= tmp.Integer;
+    memory->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    registers->Adder.Integer *= tmp.Integer;
 }
 
 void DivCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
-    ADDER->Integer /= tmp.Integer;
+    memory->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    registers->Adder.Integer /= tmp.Integer;
 }
 
 void AddFloatCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
-    ADDER->Float += tmp.Float;
+    memory->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    registers->Adder.Float += tmp.Float;
 }
 
 void SubFloatCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
-    ADDER->Float -= tmp.Float;
+    memory->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    registers->Adder.Float -= tmp.Float;
 }
 
 void MulFloatCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
-    ADDER->Float *= tmp.Float;
+    memory->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    registers->Adder.Float *= tmp.Float;
 }
 
 void DivFloatCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
-    ADDER->Float /= tmp.Float;
+    memory->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    registers->Adder.Float /= tmp.Float;
 }
 
 void ReadFloatCommand::operator()()
 {
     types tmp;
     std::cin>>tmp.Float;
-    mem->loadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    memory->loadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
 }
 
 void ReadCommand::operator()()
 {
     types tmp;
     std::cin>>tmp.Integer;
-    mem->loadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    memory->loadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
 }
 
 void PrintCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
+    memory->unloadMemory(address,(char*)&tmp.Integer,sizeof(tmp.Integer));
     std::cout<<tmp.Integer<<std::endl;
 }
 
 void PrintFloatCommand::operator()()
 {
     types tmp;
-    mem->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
+    memory->unloadMemory(address,(char*)&tmp.Float,sizeof(tmp.Float));
     std::cout<<tmp.Float<<std::endl;
 }
 
 void FloatToIntegerCommand::operator()()
 {
-    Adder->Integer = Adder->Float;
-    std::cout<<Adder->Integer<<std::endl;
+    registers->Adder.Integer = registers->Adder.Float;
 }
 
 void IntegerToFloatCommand::operator()()
 {
-    Adder->Float = Adder->Integer;
-    std::cout<<Adder->Float<<"  "<<"this"<<std::endl;
+    registers->Adder.Float = registers->Adder.Integer;
 }
 
 void JECommand::operator()()
@@ -152,20 +150,20 @@ void JumpCommand::operator()()
 
 void CallCommand::operator()()
 {
-    reg->BP = psw->getIP();
+    registers->BP = psw->getIP();
     psw->changeIP(address);
 }
 
 void RtnCommand::operator()()
 {
-    psw->changeIP(reg->BP);
+    psw->changeIP(registers->BP);
 }
 
 void CmpCommand::operator()()
 {
     int32_t tmp1,tmp2,tmp3;
-    mem->unloadMemory(reg->BP,(char*)&tmp1,sizeof(tmp1));
-    mem->unloadMemory(address,(char*)&tmp2,sizeof(tmp2));
+    memory->unloadMemory(registers->BP,(char*)&tmp1,sizeof(tmp1));
+    memory->unloadMemory(address,(char*)&tmp2,sizeof(tmp2));
     if(((tmp1>>30)&1) && ((tmp2>>30)&1))
         psw->setFlag(CF);
     if(psw->getFlag(CF) || ((tmp1>>31)&1) && ((tmp2>>31)&1))
@@ -246,30 +244,30 @@ void JNPCommand::operator()()
 
 void LeaCommand::operator()()
 {
-    reg->BP = address;
+    registers->BP = address;
 }
 
 void SaveAdderCommand::operator()()
 {
-    mem->loadMemory(address,(char*)&(Adder->Integer),sizeof(Adder->Integer));
+    memory->loadMemory(address,(char*)&(registers->Adder.Integer),sizeof(registers->Adder.Integer));
 }
 
 void LoadAdderCommand::operator()()
 {
-    mem->unloadMemory(address,(char*)&(Adder->Integer),sizeof(Adder->Integer));
+    memory->unloadMemory(address,(char*)&(registers->Adder.Integer),sizeof(registers->Adder.Integer));
 }
 
 void SaveAdderFloatCommand::operator()()
 {
-    mem->loadMemory(address,(char*)&(Adder->Float),sizeof(Adder->Float));
+    memory->loadMemory(address,(char*)&(registers->Adder.Float),sizeof(registers->Adder.Float));
 }
 
 void LoadAdderFloatCommand::operator()()
 {
-    mem->unloadMemory(address,(char*)&(Adder->Float),sizeof(Adder->Float));
+    memory->unloadMemory(address,(char*)&(registers->Adder.Float),sizeof(registers->Adder.Float));
 }
 
 void MovCommand::operator()()
 {
-    mem->copyMemory(address,reg->BP,4);
+    memory->copyMemory(address,registers->BP,4);
 }

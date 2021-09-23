@@ -1,7 +1,4 @@
 #pragma once
-
-#include <cstdint>
-
 #include "flags.h"
 
 class PSW

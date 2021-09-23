@@ -18,10 +18,9 @@ class CommandFabric:public BaseCommandFabric
 public:
     Command* make(const instruction&);
     CommandFabric(Memory* memory,PSW *psw,Registers* registers,types* adder):
-        memory(memory),psw(psw),registers(registers),adder(adder),BaseCommandFabric(){}
+        memory(memory),psw(psw),registers(registers),BaseCommandFabric(){}
 private:
     Memory* memory;
     PSW* psw;
-    types* adder;
     Registers* registers;
 };

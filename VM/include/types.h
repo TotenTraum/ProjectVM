@@ -1,7 +1,5 @@
 #pragma once
-
 #include <cstdint>
-#include <bitset>
 
 union types
 {

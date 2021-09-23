@@ -23,7 +23,7 @@ void loader(Memory& tmpName,const char* file)
 				i+=3;
 			}
 		}
-		tmpName.unloadMemory(1,(char*)&i,sizeof(i));
+		
 		tmpName.printMemory(128);
 	}
 }
@@ -40,5 +40,4 @@ int main(int argc, const char* argv[]) {
 	cpu.loadCommand();
 	cpu.exec();
 	}
-	
 }
