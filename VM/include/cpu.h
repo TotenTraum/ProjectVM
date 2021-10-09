@@ -1,28 +1,26 @@
 #pragma once
-#include "Fabric.h"
-//Base class CPU
-class CPU 
+#include "memory.h"
+#include "psw.h"
+#include "types.h"
+#include "command.h"
+#include "Instruction.h"
+
+class CPU_VM
 {
 public:
-	virtual void exec()=0;
-private:
-
-};
-
-class CPU_VM:public CPU 
-{
-public:
-	CPU_VM()
+	CPU_VM(uint16_t memSize = 65535):mem(memSize)
 	{
-		fabric = new CommandFabric(&mem,&psw,&registers,&Adder);
+		Adder.Integer = 0;
+		BP.address = 0;
+		InitCommand();
 	}
-	void loadCommand();
+	void InitCommand();
 	void exec();
-	Memory mem;
-	PSW psw; 
-	types Adder;
-	Registers registers;
+	void reset();
+	Memory mem;	//Memory
 private:
-	BaseCommandFabric* fabric = nullptr;
-	Command* currentCommand = nullptr;
+	PSW psw; 	//PSW
+	types Adder;//Adder
+	types BP;	//Base pointer
+	Command* Commands[128];
 };

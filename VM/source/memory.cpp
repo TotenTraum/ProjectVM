@@ -1,7 +1,7 @@
 #include "../include/memory.h"
 
     //write in memory
-    void Memory::loadMemory(const size_t &address,char* value,size_t size)
+    void Memory::loadMemory(const uint16_t &address,char* value,size_t size)
     {
         for(int i = 0 ; i< size;i++)
         {
@@ -9,20 +9,12 @@
         }
     }
     //read from memory
-    void Memory::unloadMemory(const size_t &address,char* value,size_t size) const
+    void Memory::unloadMemory(const uint16_t &address,char* value,size_t size) const
     {
         for(int i = 0 ; i< size;i++)
         {
             value[i]=segment[address+i];
 
-        }
-    }
-
-    void Memory::copyMemory(const size_t &from,const size_t &to,size_t size)
-    {
-        for(int i = 0 ; i< size;i++)
-        {
-            segment[to+i]=segment[from+i];
         }
     }
 

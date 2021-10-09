@@ -23,21 +23,16 @@ void loader(Memory& tmpName,const char* file)
 				i+=3;
 			}
 		}
-		
 		tmpName.printMemory(128);
 	}
 }
 
 
-
 int main(int argc, const char* argv[]) {
 	CPU_VM cpu;
+	std::cout<<std::endl;
 	cpu.mem.printMemory(128);
 	std::cout<<std::endl;
 	loader(cpu.mem,argv[1]);
-	for(int i = 0;i<11;i++)
-	{
-	cpu.loadCommand();
 	cpu.exec();
-	}
 }

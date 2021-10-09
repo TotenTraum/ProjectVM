@@ -1,9 +1,10 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include "include/Instruction.h"
 
-const size_t size = 11;
+const size_t size = 12;
 
 void writer(instruction* inst,std::string name)
 {
@@ -39,5 +40,7 @@ int main(int argc, const char* argv[])
     inst[9].address = 120;
     inst[10].code=PRINTF;
     inst[10].address = 160;
+    inst[11].code=STOP;
+    inst[11].address = 160;
     writer(inst,"file.o");
 }
