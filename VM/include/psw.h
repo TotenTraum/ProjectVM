@@ -1,17 +1,10 @@
 #pragma once
 #include <cstdint>
 
-
 class PSW
-{
-public:
+{public:
     PSW():IP(0){}
-
-    void resetFlags();
-
-    void changeIP(uint16_t address);
-
-    uint16_t getIP();
+    void resetFlags(){flags = Flags();}
 
     struct Flags
     {
@@ -21,7 +14,7 @@ public:
         uint16_t SF:1;   //Sign flag
         uint16_t OF:1;   //Overflow flag
         uint16_t WF:1;   //Wait flag
-    };
-    Flags flags;
+        uint16_t TF:1;   //Trap flag
+    } flags;
     uint16_t IP;
 };

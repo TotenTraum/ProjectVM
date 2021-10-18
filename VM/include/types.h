@@ -1,11 +1,13 @@
 #pragma once
 #include <cstdint>
 
-#define BYTE int8_t
+using byte_t = unsigned char;
+using address_t = uint16_t;
 
-union types
-{
+union data
+{	byte_t byte[4];
 	int32_t Integer;
 	float Float;
-	uint16_t address;
+	address_t address[2];
+	data(){Integer=0;}
 };

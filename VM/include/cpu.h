@@ -1,26 +1,24 @@
 #pragma once
 #include "memory.h"
 #include "psw.h"
-#include "types.h"
 #include "command.h"
 #include "Instruction.h"
 
-class CPU_VM
-{
-public:
-	CPU_VM(uint16_t memSize = 65535):mem(memSize)
-	{
-		Adder.Integer = 0;
-		BP.address = 0;
-		InitCommand();
-	}
-	void InitCommand();
+class Command;
+
+class CPU_VM final
+{public:
+	CPU_VM(){InitCommand();}
 	void exec();
 	void reset();
-	Memory mem;	//Memory
+	void readDWORD(data&);
+	void writeDWORD(data&);
+	Memory mem;		//Memory
+	PSW psw; 		//PSW
+	data Adder;		//Adder
+	data BP;		//Base pointer
+	instruction currentCommand;
 private:
-	PSW psw; 	//PSW
-	types Adder;//Adder
-	types BP;	//Base pointer
+	void InitCommand();
 	Command* Commands[128];
 };

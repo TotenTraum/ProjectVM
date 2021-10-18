@@ -1,12 +1,18 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.8)
 
-project(ObjFile)
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 
-set(CMAKE_C_COMpILER "/usr/bin/clang")
-set(CMAKE_CXX_COMpILER "/usr/bin/clang++")
+project(Parser)
 
-set (HEADERS "../include/Instruction.h")
+set(HEADERS "../include/Instruction.h" "../include/parserVMT.h" "../include/Nodes.h")
 
-#set(SOURCES )
+set(SOURCES "../source/parserVMT.cpp" "../source/Nodes.cpp")
 
-add_executable(ObjFile "../main.cpp" ${HEADERS}) 
+add_executable(objFile "../main.cpp" ${HEADERS} ${SOURCES})
+
+if(MSVC)
+  target_compile_options(objFile PRIVATE /W4 /WX )
+else()
+  target_compile_options(objFile PRIVATE -Wall -g -Wextra -pedantic -O2)
+endif()

@@ -1,80 +1,72 @@
 #include "../include/cpu.h"
+#include "../include/command.h"
 
 void CPU_VM::reset()
-{
-    psw.resetFlags();
+{   psw.resetFlags();
     psw.IP = 0;
     Adder.Integer = 0;
-    BP.address = 0;
+    BP.Integer = 0;
 }
-
+void CPU_VM::readDWORD(data& arg)
+{   for(int i = 0; i<4;i++)
+        arg.byte[i] = mem[currentCommand.address+i];
+}
+void CPU_VM::writeDWORD(data& arg)
+{   for(int i = 0; i<4;i++)
+        mem[currentCommand.address+i] = arg.byte[i];
+}
 void CPU_VM::exec() 
-{
-    while(!psw.flags.WF)
+{   while(!psw.flags.WF)
     {
-        instruction tmp;
-        mem.unloadMemory(psw.getIP(),(char*)&tmp,sizeof(tmp));
-        psw.changeIP(psw.getIP()+3);
-        if(tmp.code >= 128) tmp.address+=BP.Integer;
-        CommandAddress::setAddress(tmp.address);
-        Commands[tmp.code&127]->operator()();
+        psw.flags.TF = 1;
+        currentCommand.code = (opcode)mem[psw.IP];
+        currentCommand.address = mem[psw.IP+1];
+		currentCommand.address += mem[psw.IP+2]<<8;
+        psw.IP +=3;
+        if(currentCommand.code & 128)
+        {   if((int)((currentCommand.code&127)-CALL)<0)
+                currentCommand.address+=BP.Integer;
+            else
+                currentCommand.address+=psw.IP;
+        }
+        while(psw.flags.TF)
+        {   using namespace std;
+            cout<<endl<<setw(5)<<+psw.IP/3<<hex<<
+            setw(4)<<+(currentCommand.code)<<dec<<":";
+            mem.printMemory(150,162);
+            cout<<endl;
+            break;
+        }
+        Commands[currentCommand.code&127]->operator()();
     }
 }
-
 void CPU_VM::InitCommand()
-{   
-    CommandPSW::setPSW(&psw);
-    CommandMem::setMemory(&mem);
-    CommandBP::setBP(&BP);
-    CommandAdder::setAdder(&Adder);
-    Commands[0x00] = new StopCommand();
-    Commands[0x01] = new IncCommand();
-    Commands[0x02] = new IncFloatCommand();
-    Commands[0x03] = new AddCommand();
-    Commands[0x04] = new AddFloatCommand();
-    Commands[0x05] = new SubCommand();
-    Commands[0x06] = new SubFloatCommand();
-    Commands[0x07] = new MulCommand();
-    Commands[0x08] = new MulFloatCommand();
-    Commands[0x09] = new DivCommand();
-    Commands[0x0a] = new DivFloatCommand();
-    Commands[0x0b] = new OrCommand();
-    Commands[0x0c] = new AndCommand();
-    Commands[0x0d] = new XorCommand();
-    Commands[0x0e] = new NotCommand();
-    Commands[0x0f] = new SHLCommand();
-    Commands[0x10] = new SHRCommand();
-    Commands[0x11] = new LeaCommand();
-    Commands[0x12] = new MovCommand();
-    Commands[0x13] = new IntegerToFloatCommand();
-    Commands[0x14] = new FloatToIntegerCommand();
-    Commands[0x15] = new ReadCommand();
-    Commands[0x16] = new ReadFloatCommand();
-    Commands[0x17] = new PrintCommand();
-    Commands[0x18] = new PrintFloatCommand();
-    Commands[0x19] = new SaveAdderCommand();
-    Commands[0x1a] = new SaveAdderFloatCommand();
-    Commands[0x1b] = new LoadAdderCommand();
-    Commands[0x1c] = new LoadAdderFloatCommand();
-    Commands[0x1d] = new CmpCommand();
-    Commands[0x1e] = new CmpFloatCommand();
-    Commands[0x1f] = new CallCommand();
-    Commands[0x20] = new RtnCommand();
-    Commands[0x21] = new JumpCommand();
-    Commands[0x22] = new JECommand();
-    Commands[0x23] = new JNECommand();
-    Commands[0x24] = new JLCommand();
-    Commands[0x25] = new JLECommand();
-    Commands[0x26] = new JGCommand();
-    Commands[0x27] = new JGECommand();
-    Commands[0x28] = new JSCommand();
-    Commands[0x29] = new JCCommand();
-    Commands[0x2a] = new JOCommand();
-    Commands[0x2b] = new JPCommand();
-    Commands[0x2c] = new JNSCommand();
-    Commands[0x2d] = new JNCCommand();
-    Commands[0x2e] = new JNOCommand();
-    Commands[0x2f] = new JNPCommand();
-    for(int i = 48; i < 128; i++)
-        Commands[i] = new EmptyCommand();
+{   CommandCPU::setCPU(this);
+    Commands[STOP] = new StopCommand();
+    Commands[INC] = new IncCommand();  Commands[INCF] = new IncFloatCommand();
+    Commands[DEC] = new DecCommand();  Commands[DECF] = new DecFloatCommand();
+    Commands[ADD] = new AddCommand();  Commands[ADDF] = new AddFloatCommand();
+    Commands[SUB] = new SubCommand();  Commands[SUBF] = new SubFloatCommand();
+    Commands[MUL] = new MulCommand();  Commands[MULF] = new MulFloatCommand();
+    Commands[DIV] = new DivCommand();  Commands[DIVF] = new DivFloatCommand();
+    Commands[OR] = new OrCommand();    Commands[AND] = new AndCommand();
+    Commands[XOR] = new XorCommand();
+    Commands[NOT] = new NotCommand();
+    Commands[SHL] = new SHLCommand();  Commands[SHR] = new SHRCommand();
+    Commands[LEA] = new LeaCommand();
+    Commands[MOV] = new MovCommand();
+    Commands[I2F] = new IntegerToFloatCommand();
+    Commands[F2I] = new FloatToIntegerCommand();
+    Commands[INPUT] = new InputCommand();    Commands[INPUTF] = new InputFCommand();
+    Commands[OUTPUT] = new OutputCommand();  Commands[OUTPUTF] = new OutputFCommand();
+    Commands[SAVE] = new SaveCommand(); Commands[LOAD] = new LoadCommand();
+    Commands[CMP] = new CmpCommand();   Commands[CMPF] = new CmpFloatCommand();
+    Commands[CALL] = new CallCommand(); Commands[RTN] = new RtnCommand();
+    Commands[JUMP] = new JumpCommand();
+    Commands[JE] = new JECommand();     Commands[JNE] = new JNECommand();
+    Commands[JL] = new JLCommand();     Commands[JLE] = new JLECommand();
+    Commands[JG] = new JGCommand();     Commands[JGE] = new JGECommand();
+    Commands[JS] = new JSCommand();     Commands[JNS] = new JNSCommand();
+    Commands[JO] = new JOCommand();     Commands[JNO] = new JNOCommand();
+    for(int i = 44; i < 128; i++) Commands[i] = new EmptyCommand();
 }

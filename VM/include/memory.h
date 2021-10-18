@@ -1,35 +1,20 @@
 #pragma once
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include "types.h"
 
-class Memory
+class Memory final
 {
 public:
-    Memory():maxSize(UINT16_MAX)
-    {
-        segment = new BYTE[maxSize];
-    }
-
-    Memory(uint16_t size):maxSize(size)
-    {
-        segment = new BYTE[maxSize];
-    }
-
-    ~Memory()
-    {
-        delete[] segment;
-    }
-
-    //write in memory
-    void loadMemory(const uint16_t &address,char* value,size_t size);
-    //read from memory
-    void unloadMemory(const uint16_t &address,char* value,size_t size) const;
+    Memory(){segment = new byte_t[65536];}
+    ~Memory(){delete[] segment;}
 
     void printMemory(uint16_t maxAddress) const;
-
     void printMemory(uint16_t minAddress, uint16_t maxAdress) const;
+    void printMemory(const char* fileName) const;
 
+    byte_t& operator[](uint16_t address){return segment[address];}
 private:
-    BYTE* segment; 
-    uint16_t maxSize;
+    byte_t* segment; 
 };
