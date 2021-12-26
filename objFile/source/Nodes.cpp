@@ -29,4 +29,3 @@ void CommandNode::write(ostream& file)
     file.write((char*)&tag,sizeof(tags));
     file.write((char*)&_instruction,sizeof(instruction));
 }
-

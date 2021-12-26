@@ -18,13 +18,27 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
 project(projectVM)
 
 set (HEADERS 
-"../include/command.h" "../include/cpu.h" "../include/memory.h"
- "../include/psw.h" "../include/Instruction.h" "../include/types.h" 
+"../src/include/command.h" "../src/include/cpu.h" "../src/include/memory.h" "../src/include/exception.h"
+ "../src/include/psw.h" "../src/include/Instruction.h" "../src/include/types.h"
+ "../src/include/ArifmeticCommand.h" "../src/include/jumpCommands.h" "../src/include/TransferCommands.h"
 )
  
 set (SOURCES 
-"../source/command.cpp" "../source/cpu.cpp" "../source/memory.cpp"
-"../source/ArifmeticCommand.cpp" "../source/jumpCommands.cpp"
+"../src/source/command.cpp" "../src/source/cpu.cpp" "../src/source/memory.cpp"
+"../src/source/ArifmeticCommand.cpp" "../src/source/jumpCommands.cpp" "../src/source/TransferCommands.cpp"
 ) 
 
-add_executable(VM "../main.cpp" ${HEADERS} ${SOURCES})
+add_executable(VM "../src/main.cpp" ${HEADERS} ${SOURCES})
+
+set (TEST_HEADERS
+"../test/include/catch_reporter_automake.hpp" "../test/include/catch_reporter_sonarqube.hpp"
+"../test/include/catch_reporter_tap.hpp" "../test/include/catch_reporter_teamcity.hpp"
+"../test/include/catch.hpp"
+)
+
+set (TEST_CASES
+"../test/testcases/arifmeticCmdCase.cpp" "../test/testcases/jumpCmdCase.cpp"
+"../test/testcases/TransferCmdCase.cpp"
+)
+
+#add_executable(VM_TEST "../test/main.cpp" ${HEADERS} ${SOURCES} ${TEST_HEADERS} ${TEST_CASES})

@@ -78,11 +78,11 @@ char *VMFile::identify(char *ptr, instruction &tmp, bool &not_found)
 {
     static std::vector<const char *> commands = {"STOP", "INCF", "INC", "DECF", "DEC", "ADDF", "ADD",
                                                  "SUBF", "SUB", "MULF", "MUL", "DIVF", "DIV", "CMPF",
-                                                 "CMP", "OR", "AND", "XOR", "NOT", "SHL", "SHR",
+                                                 "CMP", "OR", "AND", "XOR", "NOT", "SAL", "SAR",
                                                  "LEA", "MOV", "I2F", "F2I", "INPUTF", "INPUT",
                                                  "OUTPUTF", "OUTPUT", "SAVE", "LOAD", "CALL", "RTN",
                                                  "JUMP", "JE", "JNE", "JLE", "JL", "JGE", "JG", "JS",
-                                                 "JC", "JO", "JP", "JNS", "JNC", "JNO", "JNP"};
+                                                  "JO", "JNS", "JNO", "CLT","STT"};
     uint8_t i;
     for (i = 0; i < commands.size(); i++)
         if (strncmp(ptr, commands[i], strlen(commands[i])) == 0)

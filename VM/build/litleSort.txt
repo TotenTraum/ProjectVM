@@ -1,0 +1,31 @@
+e 200           ;
+a 200           ;int main(){
+c LEA 150       ;   BP = 150; 
+c INPUT :[0]    ;   cin >> mem[BP+0.. BP+3]
+c INPUT :[4]    ;   cin >> mem[BP+4.. BP+7]
+c INPUT :[8]    ;   cin >> mem[BP+8..BP+11]
+c LOAD :[0]     ;   adder = mem[BP+0..BP+3]
+c STT 0         ;   debug mode on
+c CMP :[4]      ;   if(adder > mem[BP+4.. BP+7])
+c CLT 0         ;   debug mode off
+c JLE :[9]      ;   {
+c MOV :[4]      ;   mem[BP+0.. BP+3] = mem[BP+4.. BP+7]
+c SAVE :[4]     ;   mem[BP+4.. BP+7] = adder
+c LOAD :[0]     ;   adder = mem[BP+0.. BP+3]}
+c STT 0         ;   debug mode on
+c CMP :[8]      ;   if(adder > mem[BP+8.. BP+11])
+c CLT 0         ;   debug mode off
+c JLE :[6]      ;   {
+c MOV :[8]      ;       mem[BP+0.. BP+3] = mem[BP+8.. BP+11]
+c SAVE :[8]     ;       mem[BP+8..BP+11] = adder}
+c LEA 154       ;   BP = 154
+c LOAD :[0]     ;   adder = mem[BP+0.. BP+3]
+c CMP :[4]      ;   if(adder > mem[BP+4.. BP+7])
+c JLE :[6]      ;   {
+c MOV :[4]      ;   mem[BP+0.. BP+3] = mem[BP+4.. BP+7]
+c SAVE :[4]     ;   mem[BP+4.. BP+7] = adder}
+c LEA 150       ;   BP = 150
+c OUTPUT :[0]   ;   cout<<mem[BP+0.. BP+3]
+c OUTPUT :[4]   ;   cout<<mem[BP+4.. BP+7]
+c OUTPUT :[8]   ;   cout<<mem[BP+8.. BP+11]
+c STOP 0        ;   }

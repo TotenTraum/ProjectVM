@@ -1,0 +1,13 @@
+e 1000       
+i 56         ; mem[0..3] = 56
+i 5          ; mem[4..7] = 5
+a 1000       ; int main(){
+c STT 0      ;   debug mode on
+c CLT 0      ;
+c CMP 0      ;   while(adder<mem[0..3])
+c JGE :[6]   ;   {
+c ADD 4      ;       adder+= mem[4..7]
+c JUMP :[-12];   }
+c SAVE   100 ;   mem[100..103] = adder
+c OUTPUT 100 ;   cout<<adder;
+c STOP 0     ;}
