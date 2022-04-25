@@ -62,7 +62,7 @@ void interpretLine(CPU_VM& CPU,string& str,address_t& index,regex& rgx)
 		throw UndefinedPrefixException((str+=tag).data(),__FILE__,__LINE__);
 	}
 }
-void loader(CPU_VM &CPU, const char *file)
+bool loader(CPU_VM &CPU, const char *file)
 {	ifstream filestream(file);
 	vector<string> vectStr;
 	string str;
@@ -74,15 +74,22 @@ void loader(CPU_VM &CPU, const char *file)
 		filestream.close();
 		regex rgx (":\\[[\\-0-9 ]?[0-9 ]+\\]");//Для определения наличия параметра b
 		for (string& iter:vectStr)
-			interpretLine(CPU,iter,index,rgx);			
+			interpretLine(CPU,iter,index,rgx);
+		return true;			
 	}
+	else
+		return false;
 }
 void VM_main(const char* path)
 {
 	CPU_VM cpu;
-	loader(cpu,path);
-	cpu.exec();
-	cout<<"Завершение работы программы \""<<path<<"\""<<endl;	
+	if (loader(cpu,path))
+	{
+		cpu.exec();
+		cout<<"program \""<<path<<"\" was executed normally"<<endl;	
+	}
+	else
+		cout<<"file \""<<path<<"\" cannot be opened"<<endl;	
 }
 
 int main(int argc, const char **argv)
@@ -93,7 +100,7 @@ int main(int argc, const char **argv)
 	else 
 	{
 		string path;
-		cout<<"Введите путь к файлу >> ";
+		cout<<"Enter a file path << ";
 		cin>>path;
 		VM_main(path.c_str());
 	}

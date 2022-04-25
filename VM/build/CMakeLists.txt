@@ -28,7 +28,7 @@ set (SOURCES
 "../src/source/ArifmeticCommand.cpp" "../src/source/jumpCommands.cpp" "../src/source/TransferCommands.cpp"
 ) 
 
-add_executable(VM "../src/main.cpp" ${HEADERS} ${SOURCES})
+add_executable(VM01 "../src/main.cpp" ${HEADERS} ${SOURCES})
 
 set (TEST_HEADERS
 "../test/include/catch_reporter_automake.hpp" "../test/include/catch_reporter_sonarqube.hpp"

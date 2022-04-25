@@ -41,13 +41,22 @@ void CPU_VM::trapFlagHandler()
             continue;
         case 'n':
             break;
+        case 'i':
+            cout<<"Adder int:"<<Adder.Integer<<endl;
+            continue;
+        case 'f':
+            cout<<"Adder float:"<<Adder.Float<<endl;
+            continue;
         case 'm':
             cout<<"input left and right border"; cin>>left>>right;
             mem.printMemory(left,right);
             cout<<endl;
             continue;
         case 'h':
-            cout<<"n - переход к след.команде,p - вывод adder,BP и psw,m - вывод памяти [l,r]\n";
+            cout<<"n - go to next command,\n"<<
+            "p - output adder,BP and psw,\n"<<
+            "m - output memory [l,r],\n"<<
+            "c - output COP, b and arg.\n";
             continue;
         case 'c':
             cout<<"COP :"<<+currentCommand.cmd.code<<endl<<"b :"<<+currentCommand.cmd.b<<endl

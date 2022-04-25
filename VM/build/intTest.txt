@@ -1,0 +1,43 @@
+e 1000
+
+i 0          ;
+i 56         ; mem[0..3] = 56
+i 5          ; mem[4..7] = 5
+i 25
+
+a 1000       ; int main(){
+;////////////
+c ADD 4      ;
+c CMP 4      ;
+c JNE :[3]   ;
+c OUTPUT 4   ;
+;////////////
+c SUB 4      ;
+c CMP 0      ;
+c JNE :[3]   ;
+c OUTPUT 0   ;
+;////////////
+c ADD 8      ;
+c MUL 8      ;
+c CMP 12     ;
+c JNE :[3]   ;
+c OUTPUT 12  ;
+;////////////
+c DIV 8      ;
+c CMP 8      ;
+c JNE :[3]   ;
+c OUTPUT 8   ;
+;////////////
+c CMP 12     ;
+c JE :[3]    ;
+c OUTPUT 8   ;
+;////////////
+c JGE :[3]   ;
+c OUTPUT 8   ;
+;////////////
+c LOAD 12    ;
+c CMP 8      ;
+c JLE :[3]
+c OUTPUT 12  ;
+;////////////
+c STOP 0     ;}

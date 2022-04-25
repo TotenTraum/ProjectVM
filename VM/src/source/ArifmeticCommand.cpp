@@ -17,7 +17,7 @@ void IntAC::setOF()
         Flags().OF = 0;
 }
 void FloatAC::setOF()
-{   if(result > FLT_MAX || result < FLT_MIN)
+{   if(result > FLT_MAX || result < -FLT_MAX)
         Flags().OF = 1;
     else
         Flags().OF = 0;
